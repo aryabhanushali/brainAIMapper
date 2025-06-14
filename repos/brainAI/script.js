@@ -50,8 +50,9 @@ function calculateResponsivePosition(baseX, baseY, screenWidth, screenHeight) {
 
   return {
     x: baseX * scale,
-    y: (baseY + topPadding) * scale
+    y: baseY * scale + topPadding
   };
+
 }
 
 // Update the nodes array to use base positions
@@ -319,3 +320,4 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 draw();
+window.dispatchEvent(new Event('resize'));
