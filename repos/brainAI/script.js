@@ -37,25 +37,31 @@ class Particle {
 
 // Add this function after the Particle class
 function calculateResponsivePosition(baseX, baseY, screenWidth, screenHeight) {
-  const scaleX = screenWidth / 1920; // Using 1920px as base width
-  const scaleY = screenHeight / 1080; // Using 1080px as base height
-  const minScale = 0.6; // Minimum scale to prevent nodes from getting too small
+  const scaleX = screenWidth / 1920;
+  const scaleY = screenHeight / 1080;
+  const minScale = 0.6;
 
   const scale = Math.max(minScale, Math.min(scaleX, scaleY));
+
+  // Calculate title height (5vh + font size + margin)
+  const titleHeight = (screenHeight * 0.05) + (screenWidth * 0.04) + 20;
+  // Add extra padding to ensure nodes don't overlap with title
+  const topPadding = titleHeight + 50;
+
   return {
     x: baseX * scale,
-    y: baseY * scale
+    y: (baseY + topPadding) * scale
   };
 }
 
 // Update the nodes array to use base positions
 const basePositions = {
-  visualCortex: { x: -280, y: 200 },
-  auditoryArea: { x: 180, y: 120 },
-  motorCortex: { x: 280, y: 370 },
-  planningReasoning: { x: 30, y: 520 },
-  emotionDetection: { x: -240, y: 460 },
-  cognitiveControl: { x: 0, y: 270 }
+  visualCortex: { x: -280, y: 150 },
+  auditoryArea: { x: 180, y: 70 },
+  motorCortex: { x: 280, y: 320 },
+  planningReasoning: { x: 30, y: 470 },
+  emotionDetection: { x: -240, y: 410 },
+  cognitiveControl: { x: 0, y: 220 }
 };
 
 const nodes = [
