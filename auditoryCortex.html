@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Auditory Cortex - Speech Recognition</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      background: radial-gradient(ellipse at center, #0d1117 0%, #0a0d14 100%);
+      color: #f8fafc;
+      font-family: 'Inter', sans-serif;
+    }
+    .card {
+      max-width: 800px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 2.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    h2, h3 {
+      color: #60a5fa;
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+    .section {
+      max-width: 700px;
+      margin: 2rem auto;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 10px 22px;
+      background: #60a5fa;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.18s, transform 0.18s;
+      box-shadow: none;
+    }
+    button:hover {
+      background: #3b82f6;
+      transform: translateY(-2px);
+    }
+    .result {
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      text-align: center;
+      color: #60a5fa;
+      font-weight: 500;
+    }
+    .back-link {
+      text-decoration: none;
+      color: #94a3b8;
+      display: inline-block;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+    .back-link:hover {
+      color: #eeeeee;
+      ;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: #f1f5f9;
+      margin-top: 1rem;
+    }
+    th, td {
+      border: 1px solid #475569;
+      padding: 10px;
+      vertical-align: top;
+    }
+    th {
+      background: #1e293b;
+      color: #60a5fa;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+    /* Add glossary tooltip styles */
+    .glossary-term {
+      border-bottom: 1px dotted #60a5fa;
+      cursor: help;
+      color: #60a5fa;
+      position: relative;
+      transition: color 0.2s;
+    }
+    .glossary-term:hover, .glossary-term:focus {
+      color: #38bdf8;
+    }
+    .glossary-tooltip {
+      position: fixed;
+      z-index: 9999;
+      background: #1e293b;
+      color: #f1f5f9;
+      padding: 0.7em 1em;
+      border-radius: 10px;
+      font-size: 1rem;
+      box-shadow: 0 4px 24px #0008;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.18s, transform 0.18s;
+      max-width: 320px;
+      line-height: 1.5;
+      white-space: normal;
+    }
+    .glossary-tooltip.visible {
+      opacity: 1;
+      transform: translateY(-8px);
+    }
+
+    /* Add fade/slide-in animation styles */
+    .fade-section {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
+    }
+    .fade-section.visible {
+      opacity: 1;
+      transform: none;
+    }
+    h2.fade-section, h3.fade-section {
+      transition-delay: 0.1s;
+    }
+
+    /* Comparison table hover and rounded corners */
+    .compare-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      color: #f1f5f9;
+      margin: 2rem 0 1rem 0;
+      background: rgba(30,41,59,0.85);
+      border-radius: 16px;
+      overflow: hidden;
+      font-size: 1.04rem;
+    }
+    .compare-table th, .compare-table td {
+      padding: 18px 18px;
+      vertical-align: top;
+      text-align: left;
+    }
+    .compare-table th {
+      background: #1e293b;
+      color: #60a5fa;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      text-shadow: 0 0 6px #60a5fa33;
+    }
+    .compare-table td {
+      background: rgba(30,41,59,0.72);
+      border-bottom: 1px solid #334155;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      transition: background 0.2s;
+    }
+    .compare-table tr:last-child td {
+      border-bottom: none;
+    }
+    .compare-table tr:hover td {
+      background: #2d3650;
+    }
+    .compare-table th:first-child {
+      border-top-left-radius: 16px;
+    }
+    .compare-table th:last-child {
+      border-top-right-radius: 16px;
+    }
+    .compare-table tr:last-child td:first-child {
+      border-bottom-left-radius: 16px;
+    }
+    .compare-table tr:last-child td:last-child {
+      border-bottom-right-radius: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <a class="back-link" href="index.html">← Back to Brain Map</a>
+    <h2 class="fade-section">Auditory Cortex: Speech Recognition</h2>
+
+    <div class="section fade-section">
+      The auditory cortex is your brain's sound interpreter. It takes raw sound waves and transforms them into meaning — like words, music, or emotion.
+    </div>
+
+    <h3 class="fade-section">1. How Your Brain Processes Sound</h3>
+    <div class="section fade-section">
+      When you hear someone speak:
+      <ol>
+        <li>🌀 <strong>Sound waves</strong> hit your <span class="glossary-term" data-term="eardrum">eardrum</span> and are converted into electrical signals by your <span class="glossary-term" data-term="cochlea">cochlea</span>.</li>
+        <li>🧠 These signals travel to the auditory cortex, where neurons analyze:
+          <ul>
+            <li><strong>Pitch</strong> (high vs. low)</li>
+            <li><strong>Timing</strong> (rhythm and speed)</li>
+            <li><strong>Phonemes</strong> (basic sound units like "b" or "ah")</li>
+          </ul>
+        </li>
+        <li>🗣️ Finally, your brain combines this information to understand full <strong>words and meaning</strong>.</li>
+      </ol>
+    </div>
+
+    <h3 class="fade-section">2. How AI Listens Like You</h3>
+    <div class="section fade-section">
+      AI models like <span class="glossary-term" data-term="whisper">Whisper</span> or <span class="glossary-term" data-term="wav2vec">Wav2Vec 2.0</span> mimic this process:
+      <ol>
+        <li>🎤 <strong>Microphone input</strong> records your voice.</li>
+        <li>📊 The waveform is transformed into a <span class="glossary-term" data-term="mel spectrogram">mel spectrogram</span> (frequency vs time).</li>
+        <li>🧠 A <span class="glossary-term" data-term="transformer">Transformer</span> learns sound patterns and predicts phonemes or letters.</li>
+        <li>🧾 The output is <strong>decoded into text</strong>, similar to how your brain builds meaning from sound.</li>
+      </ol>
+    </div>
+
+    <h3 class="fade-section">4. Brain vs. AI Comparison</h3>
+    <div class="section fade-section">
+      <table class="compare-table">
+        <tr>
+          <th>Auditory Cortex (Human)</th>
+          <th>Speech Recognition Model (AI)</th>
+        </tr>
+        <tr>
+          <td>Converts vibrations into electrical signals</td>
+          <td>Captures raw audio via microphone</td>
+        </tr>
+        <tr>
+          <td>Neurons detect pitch, intensity, duration</td>
+          <td>Extracts frequency/time features (mel spectrogram)</td>
+        </tr>
+        <tr>
+          <td>Processes phonemes and rhythm patterns</td>
+          <td>Transformer models sequence of sound tokens</td>
+        </tr>
+        <tr>
+          <td>Combines input with memory/context</td>
+          <td>Uses attention & decoding to build sentences</td>
+        </tr>
+      </table>
+      <p style="margin-top: 1rem;"><em>While your brain hears and understands meaning, these models listen to sound and generate text — just like an artificial auditory cortex.</em></p>
+    </div>
+  </div>
+
+  <!-- Add glossary tooltip element -->
+  <div id="glossary-tooltip" class="glossary-tooltip"></div>
+
+  <script>
+    // Add glossary dictionary
+    const glossary = {
+      "auditory cortex": "The part of the brain that processes sound information, located in the temporal lobe.",
+      "eardrum": "A thin membrane that vibrates when sound waves hit it, starting the process of hearing.",
+      "cochlea": "A spiral-shaped organ in the inner ear that converts sound vibrations into electrical signals.",
+      "pitch": "The perceived frequency of a sound, determining whether it sounds high or low.",
+      "timing": "The rhythm and speed of speech, including pauses and emphasis.",
+      "phonemes": "The smallest units of sound in speech that distinguish one word from another.",
+      "whisper": "An AI model developed by OpenAI for speech recognition and transcription.",
+      "wav2vec": "A self-supervised learning model for speech recognition developed by Facebook AI.",
+      "mel spectrogram": "A visual representation of sound frequencies over time, used in speech processing.",
+      "transformer": "A type of neural network architecture that uses self-attention to process sequential data like speech."
+    };
+
+    // Add glossary tooltip logic
+    const glossaryTooltip = document.getElementById('glossary-tooltip');
+    let tooltipTimeout;
+
+    document.addEventListener('mouseover', function(e) {
+      const term = e.target.closest('.glossary-term');
+      if (term) {
+        const key = term.getAttribute('data-term');
+        if (glossary[key]) {
+          glossaryTooltip.textContent = glossary[key];
+          glossaryTooltip.classList.add('visible');
+          document.onmousemove = function(ev) {
+            let x = ev.clientX + 18;
+            let y = ev.clientY - 10;
+            if (x + glossaryTooltip.offsetWidth > window.innerWidth) x = window.innerWidth - glossaryTooltip.offsetWidth - 10;
+            if (y + glossaryTooltip.offsetHeight > window.innerHeight) y = window.innerHeight - glossaryTooltip.offsetHeight - 10;
+            glossaryTooltip.style.left = x + 'px';
+            glossaryTooltip.style.top = y + 'px';
+          };
+        }
+      }
+    });
+
+    document.addEventListener('mouseout', function(e) {
+      if (e.target.classList.contains('glossary-term')) {
+        glossaryTooltip.classList.remove('visible');
+        glossaryTooltip.style.left = '-9999px';
+        glossaryTooltip.style.top = '-9999px';
+        document.onmousemove = null;
+      }
+    });
+
+    // Add touch support for glossary
+    let lastTouchTerm = null;
+    document.addEventListener('touchstart', function(e) {
+      const term = e.target.closest('.glossary-term');
+      if (term) {
+        const key = term.getAttribute('data-term');
+        if (glossary[key]) {
+          glossaryTooltip.textContent = glossary[key];
+          glossaryTooltip.classList.add('visible');
+          const rect = term.getBoundingClientRect();
+          let x = rect.right + 8;
+          let y = rect.top;
+          if (x + glossaryTooltip.offsetWidth > window.innerWidth) x = window.innerWidth - glossaryTooltip.offsetWidth - 10;
+          if (y + glossaryTooltip.offsetHeight > window.innerHeight) y = window.innerHeight - glossaryTooltip.offsetHeight - 10;
+          glossaryTooltip.style.left = x + 'px';
+          glossaryTooltip.style.top = y + 'px';
+          lastTouchTerm = term;
+          e.preventDefault();
+        }
+      } else if (lastTouchTerm) {
+        glossaryTooltip.classList.remove('visible');
+        lastTouchTerm = null;
+      }
+    }, {passive: false});
+
+    // Add Intersection Observer for fade/slide-in
+    const fadeSections = document.querySelectorAll('.fade-section');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.18 });
+    fadeSections.forEach(section => observer.observe(section));
+
+    function startRecognition() {
+      const output = document.getElementById("transcript");
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        output.textContent = "❌ Speech recognition is not supported in this browser.";
+        return;
+      }
+
+      const recognition = new SpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.onstart = () => {
+        output.textContent = "🎧 Listening...";
+      };
+
+      recognition.onresult = (event) => {
+        const text = event.results[0][0].transcript;
+        output.textContent = "📝 " + text;
+      };
+
+      recognition.onerror = (event) => {
+        output.textContent = "❌ Error: " + event.error;
+      };
+
+      recognition.start();
+    }
+  </script>
+</body>
+</html>

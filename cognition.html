@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cognitive Control - Task Switching</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      background: radial-gradient(ellipse at center, #0d1117 0%, #0a0d14 100%);
+      color: #f8fafc;
+      font-family: 'Inter', sans-serif;
+    }
+    .card {
+      max-width: 800px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 2.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    h2, h3 {
+      color: #60a5fa;
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      text-shadow: 0 0 8px #60a5fa33, 0 0 2px #f8fafc44;
+    }
+    .section {
+      max-width: 700px;
+      margin: 2rem auto;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 10px 22px;
+      background: #60a5fa;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.18s, transform 0.18s;
+      box-shadow: none;
+    }
+    button:hover {
+      background: #3b82f6;
+      transform: translateY(-2px);
+    }
+    .result {
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      text-align: center;
+      color: #60a5fa;
+      font-weight: 500;
+    }
+    .back-link {
+      text-decoration: none;
+      color: #94a3b8;
+      display: inline-block;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+    .back-link:hover {
+      color:#eeeeee;
+      ;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: #f1f5f9;
+      margin-top: 1rem;
+    }
+    th, td {
+      border: 1px solid #475569;
+      padding: 10px;
+      vertical-align: top;
+    }
+    th {
+      background: #1e293b;
+      color: #60a5fa;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      text-shadow: 0 0 6px #60a5fa33;
+    }
+    /* Comparison table hover and rounded corners */
+    .compare-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      color: #f1f5f9;
+      margin: 2rem 0 1rem 0;
+      background: rgba(30,41,59,0.85);
+      border-radius: 16px;
+      overflow: hidden;
+      font-size: 1.04rem;
+    }
+    .compare-table th, .compare-table td {
+      padding: 18px 18px;
+      vertical-align: top;
+      text-align: left;
+    }
+    .compare-table th {
+      background: #1e293b;
+      color: #60a5fa;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      text-shadow: 0 0 6px #60a5fa33;
+    }
+    .compare-table td {
+      background: rgba(30,41,59,0.72);
+      border-bottom: 1px solid #334155;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      transition: background 0.2s;
+    }
+    .compare-table tr:last-child td {
+      border-bottom: none;
+    }
+    .compare-table tr:hover td {
+      background: #2d3650;
+    }
+    .compare-table th:first-child {
+      border-top-left-radius: 16px;
+    }
+    .compare-table th:last-child {
+      border-top-right-radius: 16px;
+    }
+    .compare-table tr:last-child td:first-child {
+      border-bottom-left-radius: 16px;
+    }
+    .compare-table tr:last-child td:last-child {
+      border-bottom-right-radius: 16px;
+    }
+    /* Add glossary tooltip styles */
+    .glossary-term {
+      border-bottom: 1px dotted #60a5fa;
+      cursor: help;
+      color: #60a5fa;
+      position: relative;
+      transition: color 0.2s;
+    }
+    .glossary-term:hover, .glossary-term:focus {
+      color: #38bdf8;
+    }
+    .glossary-tooltip {
+      position: fixed;
+      z-index: 9999;
+      background: #1e293b;
+      color: #f1f5f9;
+      padding: 0.7em 1em;
+      border-radius: 10px;
+      font-size: 1rem;
+      box-shadow: 0 4px 24px #0008;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.18s, transform 0.18s;
+      max-width: 320px;
+      line-height: 1.5;
+      white-space: normal;
+    }
+    .glossary-tooltip.visible {
+      opacity: 1;
+      transform: translateY(-8px);
+    }
+
+    /* Add fade/slide-in animation styles */
+    .fade-section {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
+    }
+    .fade-section.visible {
+      opacity: 1;
+      transform: none;
+    }
+    h2.fade-section, h3.fade-section {
+      transition-delay: 0.1s;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <a class="back-link" href="index.html">← Back to Brain Map</a>
+    <h2 class="fade-section">Cognitive Control</h2>
+
+    <div class="section fade-section">
+      The <span class="glossary-term" data-term="prefrontal cortex">prefrontal cortex</span> enables you to focus, switch tasks, control impulses, and follow complex rules — a set of abilities called <span class="glossary-term" data-term="cognitive control">cognitive control</span>.
+    </div>
+
+    <h3 class="fade-section">1. What Is Cognitive Control?</h3>
+    <div class="section fade-section">
+      <ul>
+        <li><strong>Task Switching:</strong> Shifting between different goals or mental sets (e.g., math vs writing).</li>
+        <li><strong>Inhibition:</strong> Suppressing distractions and irrelevant actions.</li>
+        <li><strong>Context Maintenance:</strong> Holding instructions or rules in working memory.</li>
+      </ul>
+      Cognitive control allows you to pursue long-term goals despite distractions.
+    </div>
+
+    <h3 class="fade-section">2. How LLMs Mimic It</h3>
+    <div class="section fade-section">
+      <span class="glossary-term" data-term="LLM">Large Language Models (LLMs)</span> don't have a "will" — but they respond flexibly based on <span class="glossary-term" data-term="contextual prompts">contextual prompts</span>:
+      <ul>
+        <li>📜 Prompt = "You are a poet" → LLM outputs poems</li>
+        <li>🔧 Prompt = "You are a math tutor" → LLM solves problems</li>
+        <li>🧠 It acts as if it's "task-switching" based on input</li>
+      </ul>
+      While not truly conscious, <span class="glossary-term" data-term="prompt engineering">prompt engineering</span> gives LLMs <em>simulated executive control</em>.
+    </div>
+
+    <h3 class="fade-section">4. Brain vs AI: Cognitive Control</h3>
+    <div class="section fade-section">
+      <table class="compare-table">
+        <tr>
+          <th>Human Brain</th>
+          <th>AI Model (LLM)</th>
+        </tr>
+        <tr>
+          <td>Maintains focus across distractions</td>
+          <td>Follows prompt constraints precisely</td>
+        </tr>
+        <tr>
+          <td>Switches tasks flexibly based on context</td>
+          <td>Changes behavior based on prompt framing</td>
+        </tr>
+        <tr>
+          <td>Suppresses irrelevant actions or thoughts</td>
+          <td>Ignores unprompted instructions (usually)</td>
+        </tr>
+        <tr>
+          <td>Requires motivation and intention</td>
+          <td>Responds reactively to context</td>
+        </tr>
+      </table>
+      <div class="section fade-section" style="max-width: 700px; margin: 2.5rem auto 1.5rem auto;">
+        <h3 style="color:#38bdf8; text-align:center;">Interactive: How Do Brain & AI Switch Tasks?</h3>
+        <div id="cog-examples" style="display:flex; flex-direction:column; gap:0.7rem; align-items:center; margin:1.2rem 0;">
+          <button class="cog-example" data-type="math">Switch to math mode</button>
+          <button class="cog-example" data-type="focus">Ignore distractions</button>
+          <button class="cog-example" data-type="writing">Focus on writing</button>
+          <button class="cog-example" data-type="role">Act as a teacher</button>
+          <button class="cog-example" data-type="switch">Switch from poetry to code</button>
+        </div>
+        <div id="cog-result" style="display:none; margin-top:1.2rem; background:rgba(30,41,59,0.92); border-radius:12px; padding:1.2em 1.5em; color:#f1f5f9; box-shadow:0 2px 12px #0005; text-align:center; font-size:1.08rem;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add glossary tooltip element -->
+  <div id="glossary-tooltip" class="glossary-tooltip"></div>
+
+  <script>
+    // Add glossary dictionary
+    const glossary = {
+      "prefrontal cortex": "The front part of the brain responsible for executive functions like planning, decision-making, and impulse control.",
+      "cognitive control": "The ability to regulate thoughts and actions in accordance with internal goals, including attention, working memory, and task switching.",
+      "task switching": "The cognitive process of shifting attention between different tasks or mental sets.",
+      "inhibition": "The ability to suppress irrelevant or distracting information or actions.",
+      "context maintenance": "The ability to keep relevant information in mind while performing a task.",
+      "LLM": "Large Language Model: An AI system trained on vast amounts of text to understand and generate human-like language.",
+      "contextual prompts": "Instructions or inputs that guide an AI model's behavior by providing specific context or role.",
+      "prompt engineering": "The practice of designing effective prompts to get desired outputs from AI language models."
+    };
+
+    // Add glossary tooltip logic
+    const glossaryTooltip = document.getElementById('glossary-tooltip');
+    let tooltipTimeout;
+
+    document.addEventListener('mouseover', function(e) {
+      const term = e.target.closest('.glossary-term');
+      if (term) {
+        const key = term.getAttribute('data-term');
+        if (glossary[key]) {
+          glossaryTooltip.textContent = glossary[key];
+          glossaryTooltip.classList.add('visible');
+          document.onmousemove = function(ev) {
+            let x = ev.clientX + 18;
+            let y = ev.clientY - 10;
+            if (x + glossaryTooltip.offsetWidth > window.innerWidth) x = window.innerWidth - glossaryTooltip.offsetWidth - 10;
+            if (y + glossaryTooltip.offsetHeight > window.innerHeight) y = window.innerHeight - glossaryTooltip.offsetHeight - 10;
+            glossaryTooltip.style.left = x + 'px';
+            glossaryTooltip.style.top = y + 'px';
+          };
+        }
+      }
+    });
+
+    document.addEventListener('mouseout', function(e) {
+      if (e.target.classList.contains('glossary-term')) {
+        glossaryTooltip.classList.remove('visible');
+        glossaryTooltip.style.left = '-9999px';
+        glossaryTooltip.style.top = '-9999px';
+        document.onmousemove = null;
+      }
+    });
+
+    // Add touch support for glossary
+    let lastTouchTerm = null;
+    document.addEventListener('touchstart', function(e) {
+      const term = e.target.closest('.glossary-term');
+      if (term) {
+        const key = term.getAttribute('data-term');
+        if (glossary[key]) {
+          glossaryTooltip.textContent = glossary[key];
+          glossaryTooltip.classList.add('visible');
+          const rect = term.getBoundingClientRect();
+          let x = rect.right + 8;
+          let y = rect.top;
+          if (x + glossaryTooltip.offsetWidth > window.innerWidth) x = window.innerWidth - glossaryTooltip.offsetWidth - 10;
+          if (y + glossaryTooltip.offsetHeight > window.innerHeight) y = window.innerHeight - glossaryTooltip.offsetHeight - 10;
+          glossaryTooltip.style.left = x + 'px';
+          glossaryTooltip.style.top = y + 'px';
+          lastTouchTerm = term;
+          e.preventDefault();
+        }
+      } else if (lastTouchTerm) {
+        glossaryTooltip.classList.remove('visible');
+        lastTouchTerm = null;
+      }
+    }, {passive: false});
+
+    // Add Intersection Observer for fade/slide-in
+    const fadeSections = document.querySelectorAll('.fade-section');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.18 });
+    fadeSections.forEach(section => observer.observe(section));
+
+    function respondAs(mode) {
+      const output = document.getElementById("contextOutput");
+      if (mode === "poet") {
+        output.textContent = `"The stars above in velvet lie,\nDreams drifting in a midnight sky."`;
+      } else if (mode === "math") {
+        output.textContent = `To solve 2x + 3 = 11:\nSubtract 3 → 2x = 8 → x = 4.`;
+      }
+    }
+  </script>
+  <script>
+    const cogExplanations = {
+      math: {
+        brain: 'Prefrontal Cortex: Switches to analytical thinking, activates math-related neural circuits.',
+        ai: 'AI (LLM): Changes output to solve math problems based on prompt.'
+      },
+      focus: {
+        brain: 'Prefrontal Cortex: Suppresses distractions, maintains attention on the task.',
+        ai: 'AI (LLM): Ignores unrelated instructions, stays on prompt context.'
+      },
+      writing: {
+        brain: 'Prefrontal Cortex: Activates language and planning areas for writing.',
+        ai: 'AI (LLM): Generates text in writing mode as prompted.'
+      },
+      role: {
+        brain: 'Prefrontal Cortex: Adopts a new role or perspective (e.g., teacher).',
+        ai: 'AI (LLM): Changes style and content to match the requested role.'
+      },
+      switch: {
+        brain: 'Prefrontal Cortex: Rapidly shifts between different mental sets (e.g., poetry to code).',
+        ai: 'AI (LLM): Switches output style and task instantly based on new prompt.'
+      }
+    };
+    const cogBtns = document.querySelectorAll('.cog-example');
+    const cogResult = document.getElementById('cog-result');
+    cogBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const type = btn.getAttribute('data-type');
+        cogResult.innerHTML = `
+          <div style='font-size:1.15em; margin-bottom:0.5em;'><b>Prompt:</b> "${btn.textContent}"</div>
+          <div style='margin-bottom:0.5em;'><b>Brain (Prefrontal Cortex):</b> <span style='color:#38bdf8;'>${cogExplanations[type].brain}</span></div>
+          <div><b>AI (LLM):</b> <span style='color:#a78bfa;'>${cogExplanations[type].ai}</span></div>
+        `;
+        cogResult.style.display = 'block';
+        cogResult.scrollIntoView({behavior:'smooth', block:'center'});
+      });
+    });
+  </script>
+</body>
+</html>

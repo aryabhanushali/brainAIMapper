@@ -1,0 +1,112 @@
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at 20% 20%, #eef2ff, #f9faff);
+    color: #1c1c1e;
+    text-align: center;
+    padding: 20px;
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  h1 {
+    font-size: 2.8rem;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 24px;
+  }
+
+  .intro-text {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #475569;
+    margin-bottom: 2rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .layout-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    flex-wrap: nowrap;
+  }
+
+  .brain-container {
+    position: relative;
+    flex: 0 0 80%;
+    max-width: 900px;
+    background: rgba(255, 255, 255, 0.65);
+    border: 1px solid rgba(224, 224, 224, 0.6);
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease;
+    padding: 20px;
+  }
+
+  .brain-container:hover {
+    transform: scale(1.01);
+  }
+
+  .brain-region {
+    fill: rgba(79, 209, 197, 0.15);
+    stroke: #38b2ac;
+    stroke-width: 2;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 0 6px rgba(56, 178, 172, 0.2));
+  }
+
+  .brain-region:hover {
+    fill: rgba(79, 209, 197, 0.3);
+    stroke-width: 3;
+    filter: drop-shadow(0 0 10px rgba(56, 178, 172, 0.4));
+    animation: pulse-glow 1s ease-in-out infinite;
+  }
+
+  .brain-region.pulse {
+    animation: pulse-glow 1s ease-in-out;
+  }
+
+  @keyframes pulse-glow {
+    0% {
+      stroke: #38b2ac;
+      stroke-width: 2;
+      fill: rgba(79, 209, 197, 0.15);
+      opacity: 1;
+    }
+    50% {
+      stroke: #319795;
+      stroke-width: 5;
+      fill: rgba(79, 209, 197, 0.4);
+      opacity: 0.85;
+    }
+    100% {
+      stroke: #38b2ac;
+      stroke-width: 2;
+      fill: rgba(79, 209, 197, 0.15);
+      opacity: 1;
+    }
+  }
+
+  button {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #38b2ac, #4fd1c5);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 6px 12px rgba(56, 178, 172, 0.25);
+  }
+
+  button:hover {
+    background: linear-gradient(135deg, #319795, #38b2ac);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(56, 178, 172, 0.35);
+  }

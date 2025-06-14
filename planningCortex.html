@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>=Planning and Reasoning</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      background: radial-gradient(ellipse at center, #0d1117 0%, #0a0d14 100%);
+      color: #f8fafc;
+      font-family: 'Inter', sans-serif;
+    }
+    .card {
+      max-width: 800px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 2.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    h2, h3 {
+      color: #60a5fa;
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      text-shadow: 0 0 8px #60a5fa33, 0 0 2px #f8fafc44;
+    }
+    .section {
+      max-width: 700px;
+      margin: 2rem auto;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+    }
+    textarea {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #f1f5f9;
+      resize: vertical;
+      margin-top: 1rem;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 10px 22px;
+      background: #60a5fa;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.18s, transform 0.18s;
+      box-shadow: none;
+    }
+    button:hover {
+      background: #3b82f6;
+      transform: translateY(-2px);
+    }
+    .result {
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      text-align: center;
+      color: #60a5fa;
+      font-weight: 500;
+    }
+    .back-link {
+      text-decoration: none;
+      color: #94a3b8;
+      display: inline-block;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+    .back-link:hover {
+      color: #eeeeee;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: #f1f5f9;
+      margin-top: 1rem;
+    }
+    th, td {
+      border: 1px solid #475569;
+      padding: 10px;
+      vertical-align: top;
+    }
+    th {
+      background: #1e293b;
+      color: #60a5fa;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      text-shadow: 0 0 6px #60a5fa33;
+    }
+
+    /* Add glossary tooltip styles */
+    .glossary-term {
+      border-bottom: 1px dotted #60a5fa;
+      cursor: help;
+      color: #60a5fa;
+      position: relative;
+      transition: color 0.2s;
+    }
+    .glossary-term:hover, .glossary-term:focus {
+      color: #38bdf8;
+    }
+    .glossary-tooltip {
+      position: fixed;
+      z-index: 9999;
+      background: #1e293b;
+      color: #f1f5f9;
+      padding: 0.7em 1em;
+      border-radius: 10px;
+      font-size: 1rem;
+      box-shadow: 0 4px 24px #0008;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.18s, transform 0.18s;
+      max-width: 320px;
+      line-height: 1.5;
+      white-space: normal;
+    }
+    .glossary-tooltip.visible {
+      opacity: 1;
+      transform: translateY(-8px);
+    }
+
+    /* Add fade/slide-in animation styles */
+    .fade-section {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
+    }
+    .fade-section.visible {
+      opacity: 1;
+      transform: none;
+    }
+    h2.fade-section, h3.fade-section {
+      transition-delay: 0.1s;
+    }
+
+    /* Comparison table hover and rounded corners */
+    .compare-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      color: #f1f5f9;
+      margin: 2rem 0 1rem 0;
+      background: rgba(30,41,59,0.85);
+      border-radius: 16px;
+      overflow: hidden;
+      font-size: 1.04rem;
+    }
+    .compare-table th, .compare-table td {
+      padding: 18px 18px;
+      vertical-align: top;
+      text-align: left;
+    }
+    .compare-table th {
+      background: #1e293b;
+      color: #60a5fa;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      text-shadow: 0 0 6px #60a5fa33;
+    }
+    .compare-table td {
+      background: rgba(30,41,59,0.72);
+      border-bottom: 1px solid #334155;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      transition: background 0.2s;
+    }
+    .compare-table tr:last-child td {
+      border-bottom: none;
+    }
+    .compare-table tr:hover td {
+      background: #2d3650;
+    }
+    .compare-table th:first-child {
+      border-top-left-radius: 16px;
+    }
+    .compare-table th:last-child {
+      border-top-right-radius: 16px;
+    }
+    .compare-table tr:last-child td:first-child {
+      border-bottom-left-radius: 16px;
+    }
+    .compare-table tr:last-child td:last-child {
+      border-bottom-right-radius: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <a class="back-link" href="index.html">← Back to Brain Map</a>
+    <h2 class="fade-section" style="color:#60a5fa; text-shadow:0 0 8px #60a5fa33, 0 0 2px #f8fafc44;">Planning and Reasoning</h2>
+
+    <div class="section fade-section">
+      Your <span class="glossary-term" data-term="prefrontal cortex">prefrontal cortex</span> is responsible for high-level reasoning, planning, and decision-making. It's what lets you imagine future actions, weigh consequences, and think strategically.
+    </div>
+
+    <h3 class="fade-section">1. How Your Brain Plans</h3>
+    <div class="section fade-section">
+      When you're deciding what to do:
+      <ol>
+        <li>The <span class="glossary-term" data-term="prefrontal cortex">prefrontal cortex</span> activates when you face a goal (e.g., "plan a trip").</li>
+        <li>It uses memory, prediction, and logic to simulate possible actions and consequences.</li>
+        <li> You evaluate the best option and send it to <span class="glossary-term" data-term="motor areas">motor areas</span> for execution.</li>
+      </ol>
+    </div>
+
+    <h3 class="fade-section">2. How AI Mimics Planning</h3>
+    <div class="section fade-section">
+      <span class="glossary-term" data-term="LLM">LLMs</span> like GPT-4 appear to reason by generating plausible next steps:
+      <ol>
+        <li>You give it a prompt (e.g., "How should I study for finals?").</li>
+        <li>The model predicts one <span class="glossary-term" data-term="token">token</span> at a time — drawing from patterns in its training data.</li>
+        <li>The result is structured reasoning, like a step-by-step plan or argument.</li>
+      </ol>
+    </div>
+
+    <h3 class="fade-section">4. Brain vs. AI: Planning</h3>
+    <div class="section fade-section">
+      <table class="compare-table">
+        <tr>
+          <th>Prefrontal Cortex (Human)</th>
+          <th>Large Language Model (AI)</th>
+        </tr>
+        <tr>
+          <td>Thinks through multi-step plans using logic and experience</td>
+          <td>Generates multi-step text via token prediction and training patterns</td>
+        </tr>
+        <tr>
+          <td>Imagines future actions and consequences</td>
+          <td>Samples likely next steps from its learned distribution</td>
+        </tr>
+        <tr>
+          <td>Uses episodic memory to inform judgment</td>
+          <td>Uses training corpus to mimic expert reasoning</td>
+        </tr>
+        <tr>
+          <td>Updates plans dynamically as things change</td>
+          <td>Can regenerate plans with new prompt/context</td>
+        </tr>
+      </table>
+      <p style="margin-top: 1rem;"><em>Just like your brain forms strategies, LLMs simulate planning by generating structured reasoning from past examples.</em></p>
+    </div>
+  </div>
+
+  <!-- Add glossary tooltip element -->
+  <div id="glossary-tooltip" class="glossary-tooltip"></div>
+
+  <script>
+    // Add glossary dictionary
+    const glossary = {
+      "prefrontal cortex": "The front part of the brain responsible for executive functions like planning, decision-making, and complex reasoning.",
+      "memory": "The ability to store and retrieve information, crucial for planning and decision-making.",
+      "prediction": "The ability to anticipate future outcomes based on past experiences and current context.",
+      "logic": "The process of reasoning and drawing conclusions from premises or evidence.",
+      "motor areas": "Regions of the brain that control movement and execute planned actions.",
+      "LLM": "Large Language Model: An AI system trained on vast amounts of text to understand and generate human-like language.",
+      "prompt": "Input given to an AI model that guides its response or behavior.",
+      "token": "A unit of text (word or subword) that an AI model processes one at a time."
+    };
+
+    // Add glossary tooltip logic
+    const glossaryTooltip = document.getElementById('glossary-tooltip');
+    let tooltipTimeout;
+
+    document.addEventListener('mouseover', function(e) {
+      const term = e.target.closest('.glossary-term');
+      if (term) {
+        const key = term.getAttribute('data-term');
+        if (glossary[key]) {
+          glossaryTooltip.textContent = glossary[key];
+          glossaryTooltip.classList.add('visible');
+          document.onmousemove = function(ev) {
+            let x = ev.clientX + 18;
+            let y = ev.clientY - 10;
+            if (x + glossaryTooltip.offsetWidth > window.innerWidth) x = window.innerWidth - glossaryTooltip.offsetWidth - 10;
+            if (y + glossaryTooltip.offsetHeight > window.innerHeight) y = window.innerHeight - glossaryTooltip.offsetHeight - 10;
+            glossaryTooltip.style.left = x + 'px';
+            glossaryTooltip.style.top = y + 'px';
+          };
+        }
+      }
+    });
+
+    document.addEventListener('mouseout', function(e) {
+      if (e.target.classList.contains('glossary-term')) {
+        glossaryTooltip.classList.remove('visible');
+        glossaryTooltip.style.left = '-9999px';
+        glossaryTooltip.style.top = '-9999px';
+        document.onmousemove = null;
+      }
+    });
+
+    // Add touch support for glossary
+    let lastTouchTerm = null;
+    document.addEventListener('touchstart', function(e) {
+      const term = e.target.closest('.glossary-term');
+      if (term) {
+        const key = term.getAttribute('data-term');
+        if (glossary[key]) {
+          glossaryTooltip.textContent = glossary[key];
+          glossaryTooltip.classList.add('visible');
+          const rect = term.getBoundingClientRect();
+          let x = rect.right + 8;
+          let y = rect.top;
+          if (x + glossaryTooltip.offsetWidth > window.innerWidth) x = window.innerWidth - glossaryTooltip.offsetWidth - 10;
+          if (y + glossaryTooltip.offsetHeight > window.innerHeight) y = window.innerHeight - glossaryTooltip.offsetHeight - 10;
+          glossaryTooltip.style.left = x + 'px';
+          glossaryTooltip.style.top = y + 'px';
+          lastTouchTerm = term;
+          e.preventDefault();
+        }
+      } else if (lastTouchTerm) {
+        glossaryTooltip.classList.remove('visible');
+        lastTouchTerm = null;
+      }
+    }, {passive: false});
+
+    // Add Intersection Observer for fade/slide-in
+    const fadeSections = document.querySelectorAll('.fade-section');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.18 });
+    fadeSections.forEach(section => observer.observe(section));
+
+    function generatePlan() {
+      const prompt = document.getElementById("userPrompt").value.trim();
+      const output = document.getElementById("aiPlanOutput");
+
+      if (!prompt) {
+        output.textContent = "Please enter a prompt.";
+        return;
+      }
+
+      // Simulated response (replace with OpenAI API in production)
+      output.textContent = "🧠 Planning...\n";
+
+      setTimeout(() => {
+        output.textContent = `Here's how you might approach it:\n
+1. Understand your goal clearly.
+2. Break it into smaller tasks.
+3. Research tools and resources.
+4. Create a timeline and assign steps.
+5. Review and adjust as needed.`;
+      }, 1000);
+    }
+  </script>
+</body>
+</html>

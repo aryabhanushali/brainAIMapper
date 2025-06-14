@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Brain-AI Mapper</title>
+  <style>
+    body {
+      margin: 0;
+      background: radial-gradient(ellipse at center, #0d1117 0%, #0a0d14 100%);
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    h1 {
+      position: absolute;
+      top: 28px;
+      font-size: 2.4rem;
+      color: #f8fafc;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
+      z-index: 2;
+      animation: fadeGlow 3s infinite alternate;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    @keyframes fadeGlow {
+      from {
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+      }
+      to {
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+      }
+    }
+
+    .intro-text {
+      opacity: 0;
+      max-width: 600px;
+      margin: 0 auto 18px auto;
+      background: rgba(30,41,59,0.92);
+      color: #f1f5f9;
+      border-radius: 14px;
+      padding: 1.2rem 1.5rem;
+      font-size: 1.08rem;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+      pointer-events: none;
+      position: absolute;
+      left: 50%;
+      top: 90px;
+      transform: translateX(-50%);
+      transition: opacity 0.35s;
+      z-index: 10;
+      text-align: center;
+    }
+    h1:hover + .intro-text, h1:focus + .intro-text {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #neuronCanvas {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+
+    #brainBackground {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scaleX(-1);
+      width: 850px;
+      opacity: 0.15;
+      pointer-events: none;
+      z-index: 0;
+      animation: brainFloat 7s ease-in-out infinite alternate, brainPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes brainFloat {
+      0% { transform: translate(-50%, -50%) scaleX(-1) translateY(0); }
+      100% { transform: translate(-50%, -50%) scaleX(-1) translateY(-18px); }
+    }
+
+    @keyframes brainPulse {
+      0%, 100% { opacity: 0.15; }
+      50% { opacity: 0.22; }
+    }
+
+    .node-anim {
+      opacity: 0;
+      transform: scale(0.7);
+      transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
+    }
+
+    .node-anim.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .connection-anim {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      transition: stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1);
+    }
+
+    .connection-anim.visible {
+      stroke-dashoffset: 0;
+    }
+  </style>
+</head>
+<body>
+<h1>Brain ↔ AI Interactive Map</h1>
+<div class="intro-text">
+  <strong>Welcome to the Brain ↔ AI Interactive Map!</strong><br>
+  <br>
+  This tool lets you explore how different regions of the human brain inspired the creation of specialized AI models. Just as your brain has areas for vision, movement, planning, and emotion, modern AI uses <b>Large Language Models (LLMs)</b> and other neural networks—each designed to mimic a specific brain function.<br><br>
+  Click on any glowing node to see how AI systems were built by learning from the brain's structure and abilities. Discover the science behind vision models, speech recognition, planning, and more!
+</div>
+<img src="brain-outline.png" id="brainBackground" alt="Brain silhouette background" />
+<canvas id="neuronCanvas"></canvas>
+<script src="script.js"></script>
+</body>
+</html>

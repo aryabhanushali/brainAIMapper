@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Motor Cortex - Movement Control</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      background: radial-gradient(ellipse at center, #0d1117 0%, #0a0d14 100%);
+      color: #f8fafc;
+      font-family: 'Inter', sans-serif;
+    }
+    .card {
+      max-width: 800px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 2.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    h2, h3 {
+      color: #60a5fa;
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      text-shadow: 0 0 8px #60a5fa33, 0 0 2px #f8fafc44;
+    }
+    .section {
+      max-width: 700px;
+      margin: 2rem auto;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+    }
+    .back-link {
+      text-decoration: none;
+      color: #94a3b8;
+      display: inline-block;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+    .back-link:hover {
+      color: #eeeeee;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: #f1f5f9;
+      margin-top: 1rem;
+    }
+    th, td {
+      border: 1px solid #475569;
+      padding: 10px;
+      vertical-align: top;
+    }
+    th {
+      background: #1e293b;
+      color: #60a5fa;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      text-shadow: 0 0 6px #60a5fa33;
+    }
+    /* Comparison table hover and rounded corners */
+    .compare-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      color: #f1f5f9;
+      margin: 2rem 0 1rem 0;
+      background: rgba(30,41,59,0.85);
+      border-radius: 16px;
+      overflow: hidden;
+      font-size: 1.04rem;
+    }
+    .compare-table th, .compare-table td {
+      padding: 18px 18px;
+      vertical-align: top;
+      text-align: left;
+    }
+    .compare-table th {
+      background: #1e293b;
+      color: #60a5fa;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      text-shadow: 0 0 6px #60a5fa33;
+    }
+    .compare-table td {
+      background: rgba(30,41,59,0.72);
+      border-bottom: 1px solid #334155;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      transition: background 0.2s;
+    }
+    .compare-table tr:last-child td {
+      border-bottom: none;
+    }
+    .compare-table tr:hover td {
+      background: #2d3650;
+    }
+    .compare-table th:first-child {
+      border-top-left-radius: 16px;
+    }
+    .compare-table th:last-child {
+      border-top-right-radius: 16px;
+    }
+    .compare-table tr:last-child td:first-child {
+      border-bottom-left-radius: 16px;
+    }
+    .compare-table tr:last-child td:last-child {
+      border-bottom-right-radius: 16px;
+    }
+    #agent-box {
+      margin: 2rem auto;
+      width: 300px;
+      height: 100px;
+      background-color: #1e293b;
+      border-radius: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+    #agent {
+      width: 40px;
+      height: 40px;
+      background-color: #87a7f6;
+      border-radius: 50%;
+      position: absolute;
+      top: 30px;
+      left: 0;
+      transition: left 0.3s ease;
+    }
+    button {
+      display: block;
+      margin: 1rem auto 0;
+      padding: 10px 22px;
+      background: #60a5fa;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.18s, transform 0.18s;
+      box-shadow: none;
+    }
+    button:hover {
+      background: #3b82f6;
+      transform: translateY(-2px);
+    }
+    /* Glossary tooltip styles */
+    .glossary-term {
+      border-bottom: 1px dotted #60a5fa;
+      cursor: help;
+      color: #60a5fa;
+      position: relative;
+      transition: color 0.2s;
+    }
+    .glossary-term:hover, .glossary-term:focus {
+      color: #38bdf8;
+    }
+    .glossary-tooltip {
+      position: fixed;
+      z-index: 9999;
+      background: #1e293b;
+      color: #f1f5f9;
+      padding: 0.7em 1em;
+      border-radius: 10px;
+      font-size: 1rem;
+      box-shadow: 0 4px 24px #0008;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.18s, transform 0.18s;
+      max-width: 320px;
+      line-height: 1.5;
+      white-space: normal;
+    }
+    .glossary-tooltip.visible {
+      opacity: 1;
+      transform: translateY(-8px);
+    }
+    /* Fade/slide-in animation styles */
+    .fade-section {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
+    }
+    .fade-section.visible {
+      opacity: 1;
+      transform: none;
+    }
+    h2.fade-section, h3.fade-section {
+      transition-delay: 0.1s;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <a class="back-link" href="index.html">← Back to Brain Map</a>
+    <h2 class="fade-section">Motor Cortex: Movement & Control</h2>
+
+    <div class="section fade-section">
+      The <span class="glossary-term" data-term="motor cortex">motor cortex</span> sends signals to your muscles to control movement. It plans and initiates actions like reaching, walking, or typing.
+    </div>
+
+    <h3 class="fade-section">1. How Your Brain Controls Movement</h3>
+    <div class="section fade-section">
+      <ol>
+        <li>Your <span class="glossary-term" data-term="motor cortex">motor cortex</span> receives an intention (e.g., "grab the cup").</li>
+        <li>It plans a sequence of muscle activations based on your body and environment.</li>
+        <li>Signals travel down the spinal cord to contract muscles.</li>
+        <li> Feedback from the senses is used to adjust movements in real-time.</li>
+      </ol>
+    </div>
+
+    <h3 class="fade-section">2. How AI Learns to Move</h3>
+    <div class="section fade-section">
+      AI systems learn control using <span class="glossary-term" data-term="reinforcement learning">reinforcement learning (RL)</span>:
+      <ol>
+        <li>🎯 An <span class="glossary-term" data-term="agent">agent</span> sets a goal (e.g., reach target).</li>
+        <li>🕹️ It tries actions in an environment (like a game or robot sim).</li>
+        <li>✅ It gets <span class="glossary-term" data-term="reward">rewards</span> for good actions (e.g., getting closer to goal).</li>
+        <li>🧠 A <span class="glossary-term" data-term="neural network">neural network</span> updates its strategy to maximize reward — like <span class="glossary-term" data-term="muscle memory">muscle memory</span> forming in your brain.</li>
+      </ol>
+    </div>
+
+    <h3 class="fade-section">4. Brain vs AI: Motor Control</h3>
+    <div class="section fade-section">
+      <table class="compare-table">
+        <tr>
+          <th>Motor Cortex (Human)</th>
+          <th>Reinforcement Learning Agent</th>
+        </tr>
+        <tr>
+          <td>Plans and initiates physical movement</td>
+          <td>Selects actions based on learned <span class="glossary-term" data-term="policy">policies</span></td>
+        </tr>
+        <tr>
+          <td>Uses sensory feedback to refine motion</td>
+          <td>Uses <span class="glossary-term" data-term="reward">reward signals</span> to improve behavior</td>
+        </tr>
+        <tr>
+          <td>Strengthens neural pathways with practice</td>
+          <td>Optimizes weights in a <span class="glossary-term" data-term="neural network">neural net</span> via training</td>
+        </tr>
+        <tr>
+          <td>Coordinates multiple muscles for balance</td>
+          <td>Coordinates joint or pixel actions in environments</td>
+        </tr>
+      </table>
+      <p style="margin-top: 1rem;"><em>Just like your brain learns how to walk, AI agents learn how to move by trial and error in a simulated world.</em></p>
+    </div>
+  </div>
+
+  <!-- Glossary tooltip element -->
+  <div id="glossary-tooltip" class="glossary-tooltip"></div>
+
+  <script>
+    // Glossary dictionary
+    const glossary = {
+      "motor cortex": "A region of the brain responsible for planning, controlling, and executing voluntary movements.",
+      "reinforcement learning": "A type of machine learning where an agent learns to make decisions by receiving rewards or penalties.",
+      "agent": "An entity (human, animal, or AI) that takes actions in an environment to achieve a goal.",
+      "reward": "A signal that tells an agent how well it is doing at a task, used to reinforce good actions.",
+      "neural network": "A computational model inspired by the brain, made up of interconnected nodes (neurons) that process information.",
+      "policy": "A strategy or set of rules that an agent follows to decide which action to take next.",
+      "muscle memory": "The process by which the brain and body learn to perform tasks automatically through repetition.",
+    };
+
+    // Tooltip logic
+    const glossaryTooltip = document.getElementById('glossary-tooltip');
+    let tooltipTimeout;
+
+    document.addEventListener('mouseover', function(e) {
+      const term = e.target.closest('.glossary-term');
+      if (term) {
+        const key = term.getAttribute('data-term');
+        if (glossary[key]) {
+          glossaryTooltip.textContent = glossary[key];
+          glossaryTooltip.classList.add('visible');
+          document.onmousemove = function(ev) {
+            let x = ev.clientX + 18;
+            let y = ev.clientY - 10;
+            if (x + glossaryTooltip.offsetWidth > window.innerWidth) x = window.innerWidth - glossaryTooltip.offsetWidth - 10;
+            if (y + glossaryTooltip.offsetHeight > window.innerHeight) y = window.innerHeight - glossaryTooltip.offsetHeight - 10;
+            glossaryTooltip.style.left = x + 'px';
+            glossaryTooltip.style.top = y + 'px';
+          };
+        }
+      }
+    });
+
+    document.addEventListener('mouseout', function(e) {
+      if (e.target.classList.contains('glossary-term')) {
+        glossaryTooltip.classList.remove('visible');
+        glossaryTooltip.style.left = '-9999px';
+        glossaryTooltip.style.top = '-9999px';
+        document.onmousemove = null;
+      }
+    });
+
+    // Touch support
+    let lastTouchTerm = null;
+    document.addEventListener('touchstart', function(e) {
+      const term = e.target.closest('.glossary-term');
+      if (term) {
+        const key = term.getAttribute('data-term');
+        if (glossary[key]) {
+          glossaryTooltip.textContent = glossary[key];
+          glossaryTooltip.classList.add('visible');
+          const rect = term.getBoundingClientRect();
+          let x = rect.right + 8;
+          let y = rect.top;
+          if (x + glossaryTooltip.offsetWidth > window.innerWidth) x = window.innerWidth - glossaryTooltip.offsetWidth - 10;
+          if (y + glossaryTooltip.offsetHeight > window.innerHeight) y = window.innerHeight - glossaryTooltip.offsetHeight - 10;
+          glossaryTooltip.style.left = x + 'px';
+          glossaryTooltip.style.top = y + 'px';
+          lastTouchTerm = term;
+          e.preventDefault();
+        }
+      } else if (lastTouchTerm) {
+        glossaryTooltip.classList.remove('visible');
+        lastTouchTerm = null;
+      }
+    }, {passive: false});
+
+    // Intersection Observer for fade/slide-in
+    const fadeSections = document.querySelectorAll('.fade-section');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.18 });
+    fadeSections.forEach(section => observer.observe(section));
+  </script>
+</body>
+</html>
