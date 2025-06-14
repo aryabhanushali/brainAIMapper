@@ -19,8 +19,8 @@
 
     h1 {
       position: absolute;
-      top: 28px;
-      font-size: 2.4rem;
+      top: 5vh;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
       color: #f8fafc;
       font-weight: 500;
       letter-spacing: 0.5px;
@@ -29,6 +29,9 @@
       animation: fadeGlow 3s infinite alternate;
       left: 50%;
       transform: translateX(-50%);
+      margin: 0;
+      padding: 0;
+      white-space: nowrap;
     }
 
     @keyframes fadeGlow {
@@ -42,18 +45,18 @@
 
     .intro-text {
       opacity: 0;
-      max-width: 600px;
-      margin: 0 auto 18px auto;
+      max-width: min(600px, 90vw);
+      margin: 0 auto;
       background: rgba(30,41,59,0.92);
       color: #f1f5f9;
       border-radius: 14px;
-      padding: 1.2rem 1.5rem;
-      font-size: 1.08rem;
+      padding: clamp(0.8rem, 2vw, 1.2rem) clamp(1rem, 3vw, 1.5rem);
+      font-size: clamp(0.9rem, 2vw, 1.08rem);
       box-shadow: 0 4px 24px rgba(0,0,0,0.12);
       pointer-events: none;
       position: absolute;
       left: 50%;
-      top: 90px;
+      top: calc(5vh + 2.4rem + 1rem);
       transform: translateX(-50%);
       transition: opacity 0.35s;
       z-index: 10;
