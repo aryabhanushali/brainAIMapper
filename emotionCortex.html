@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Amygdala - Emotion Detection</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      background: radial-gradient(ellipse at center, #0d1117 0%, #0a0d14 100%);
+      color: #f8fafc;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .card {
+      max-width: 800px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      box-shadow: 0 12px 24px rgba(255, 255, 255, 0.05);
+      padding: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    h2, h3 {
+      color: #60a5fa;
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      text-shadow: 0 0 8px #60a5fa33, 0 0 2px #f8fafc44;
+    }
+
+    .section {
+      max-width: 700px;
+      margin: 2rem auto;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #f1f5f9;
+      resize: vertical;
+      margin-top: 1rem;
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: 10px 22px;
+      background: #60a5fa;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.18s, transform 0.18s;
+      box-shadow: none;
+    }
+
+    button:hover {
+      background: #3b82f6;
+      transform: translateY(-2px);
+    }
+
+    .result {
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      text-align: center;
+      color: #60a5fa;
+      font-weight: 500;
+    }
+
+    .back-link {
+      text-decoration: none;
+      color: #94a3b8;
+      display: inline-block;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .back-link:hover {
+      color:#eeeeee;
+      ;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: #f1f5f9;
+    }
+
+    th, td {
+      border: 1px solid #475569;
+      padding: 10px;
+      vertical-align: top;
+    }
+
+    th {
+      background: #1e293b;
+      color: #60a5fa;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      text-shadow: 0 0 6px #60a5fa33;
+    }
+
+    pre {
+      font-family: monospace;
+    }
+
+    /* Add glossary tooltip styles */
+    .glossary-term {
+      border-bottom: 1px dotted #60a5fa;
+      cursor: help;
+      color: #60a5fa;
+      position: relative;
+      transition: color 0.2s;
+    }
+    .glossary-term:hover, .glossary-term:focus {
+      color: #38bdf8;
+    }
+    .glossary-tooltip {
+      position: fixed;
+      z-index: 9999;
+      background: #1e293b;
+      color: #f1f5f9;
+      padding: 0.7em 1em;
+      border-radius: 10px;
+      font-size: 1rem;
+      box-shadow: 0 4px 24px #0008;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.18s, transform 0.18s;
+      max-width: 320px;
+      line-height: 1.5;
+      white-space: normal;
+    }
+    .glossary-tooltip.visible {
+      opacity: 1;
+      transform: translateY(-8px);
+    }
+
+    /* Add fade/slide-in animation styles */
+    .fade-section {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
+    }
+    .fade-section.visible {
+      opacity: 1;
+      transform: none;
+    }
+    h2.fade-section, h3.fade-section {
+      transition-delay: 0.1s;
+    }
+
+    /* Comparison table hover and rounded corners */
+    .compare-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      color: #f1f5f9;
+      margin: 2rem 0 1rem 0;
+      background: rgba(30,41,59,0.85);
+      border-radius: 16px;
+      overflow: hidden;
+      font-size: 1.04rem;
+    }
+    .compare-table th, .compare-table td {
+      padding: 18px 18px;
+      vertical-align: top;
+      text-align: left;
+    }
+    .compare-table th {
+      background: #1e293b;
+      color: #60a5fa;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      text-shadow: 0 0 6px #60a5fa33;
+    }
+    .compare-table td {
+      background: rgba(30,41,59,0.72);
+      border-bottom: 1px solid #334155;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      transition: background 0.2s;
+    }
+    .compare-table tr:last-child td {
+      border-bottom: none;
+    }
+    .compare-table tr:hover td {
+      background: #2d3650;
+    }
+    .compare-table th:first-child {
+      border-top-left-radius: 16px;
+    }
+    .compare-table th:last-child {
+      border-top-right-radius: 16px;
+    }
+    .compare-table tr:last-child td:first-child {
+      border-bottom-left-radius: 16px;
+    }
+    .compare-table tr:last-child td:last-child {
+      border-bottom-right-radius: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <a class="back-link" href="index.html">← Back to Brain Map</a>
+    <h2 class="fade-section">Amygdala: Emotion Detection</h2>
+
+    <div class="section fade-section">
+      The <span class="glossary-term" data-term="amygdala">amygdala</span> in the brain helps detect and process emotional signals—fear, joy, anger, and more. In AI, a parallel task is <span class="glossary-term" data-term="sentiment analysis">sentiment analysis</span>, where algorithms analyze text to infer emotions or tone.
+    </div>
+
+    <table class="compare-table fade-section" style="margin: 2rem auto 2.5rem auto; max-width: 700px;">
+      <colgroup>
+        <col style="width: 50%;">
+        <col style="width: 50%;">
+      </colgroup>
+      <tr>
+        <th>Human Amygdala</th>
+        <th>AI Sentiment Analysis</th>
+      </tr>
+      <tr>
+        <td><b>Detects emotional signals</b> (fear, joy, anger, etc.) from sensory input.</td>
+        <td><b>Detects sentiment</b> (positive, negative, neutral) from text input.</td>
+      </tr>
+      <tr>
+        <td><b>Responds to tone, facial expressions, and context</b> in real time.</td>
+        <td><b>Analyzes keywords, context, and patterns</b> in language data.</td>
+      </tr>
+      <tr>
+        <td><b>Uses neural circuits</b> to generalize to new emotional cues.</td>
+        <td><b>Uses neural networks</b> (like transformers) to generalize to new text.</td>
+      </tr>
+      <tr>
+        <td><b>Triggers physiological and behavioral responses</b> (e.g., fight or flight).</td>
+        <td><b>Triggers automated responses</b> (e.g., flagging, recommendations, chatbots).</td>
+      </tr>
+    </table>
+
+    <div class="section fade-section">
+      <h3>How Emotion Filters Work</h3>
+      <span class="glossary-term" data-term="emotion detection">Emotion detection</span> algorithms look for specific keywords or patterns. Just like the amygdala responds to tone and expressions, sentiment models rely on:
+      <ul>
+        <li><strong>Keyword Matching:</strong> Detecting strong emotion words (e.g., "hate", "love")</li>
+        <li><strong>Context Understanding:</strong> Using surrounding words to interpret tone</li>
+        <li><strong>Neural Inference:</strong> Using <span class="glossary-term" data-term="transformer">transformer</span> models to generalize to new inputs</li>
+      </ul>
+
+      <h3>Example Emotion Filters</h3>
+      <table>
+        <tr>
+          <th>Detected Words</th>
+          <th>Emotion</th>
+          <th>Explanation</th>
+        </tr>
+        <tr>
+          <td><pre>happy, amazing, great, love</pre></td>
+          <td>😊 Positive</td>
+          <td>These words express joy, satisfaction, or affection. The AI interprets them as indicators of positive sentiment.</td>
+        </tr>
+        <tr>
+          <td><pre>sad, angry, terrible, hate</pre></td>
+          <td>😠 Negative</td>
+          <td>Words associated with pain, frustration, or dislike signal negative emotions — just like how the amygdala reacts to threats or distress.</td>
+        </tr>
+        <tr>
+          <td><pre>okay, maybe, fine, normal</pre></td>
+          <td>😐 Neutral</td>
+          <td>These neutral or uncertain terms suggest a flat or mixed emotional tone — not strongly positive or negative.</td>
+        </tr>
+      </table>
+      <p style="margin-top: 1rem;"><em>In the brain, the amygdala lights up when we feel. In AI, it's the sentiment model lighting up on specific words or tones.</em></p>
+    </div>
+
+    <div class="section fade-section" style="text-align:center; color:#60a5fa; font-weight:600; font-size:1.1rem; text-shadow:0 0 8px #60a5fa33, 0 0 2px #f8fafc44;">
+      <strong>How AI Mimics the Amygdala:</strong>
+      <ul>
+        <li><strong>Input:</strong> Text (e.g., tweets, reviews, messages)</li>
+        <li><strong>Tokenization:</strong> Breaking the sentence into words/tokens</li>
+        <li><strong>Model Inference:</strong> A transformer model (like BERT) classifies tone as positive, negative, or neutral</li>
+        <li><strong>Output:</strong> Emotional label — similar to the amygdala recognizing anger, fear, or happiness</li>
+      </ul>
+    </div>
+
+    <div class="section fade-section" style="max-width: 700px; margin: 2.5rem auto 1.5rem auto;">
+      <h3 style="color:#399fdf; text-align:center;">Interactive: How Do Brain & AI Detect Emotion?</h3>
+      <div id="example-sentences" style="display:flex; flex-direction:column; gap:0.7rem; align-items:center; margin:1.2rem 0;">
+        <button class="emo-example" data-sentiment="positive">I love this!</button>
+        <button class="emo-example" data-sentiment="negative">This is terrible.</button>
+        <button class="emo-example" data-sentiment="neutral">I feel okay.</button>
+        <button class="emo-example" data-sentiment="positive">What a wonderful surprise!</button>
+        <button class="emo-example" data-sentiment="negative">I'm so angry right now.</button>
+      </div>
+      <div id="emo-result" style="display:none; margin-top:1.2rem; background:rgba(30,41,59,0.92); border-radius:12px; padding:1.2em 1.5em; color:#f1f5f9; box-shadow:0 2px 12px #0005; text-align:center; font-size:1.08rem;"></div>
+    </div>
+  </div>
+
+  <!-- Add glossary tooltip element -->
+  <div id="glossary-tooltip" class="glossary-tooltip"></div>
+
+  <script>
+    // Add glossary dictionary
+    const glossary = {
+      "amygdala": "A small, almond-shaped structure in the brain that processes emotions, particularly fear and pleasure.",
+      "sentiment analysis": "The process of determining the emotional tone behind a piece of text, using natural language processing.",
+      "emotion detection": "The process of identifying and classifying emotions in text, speech, or facial expressions.",
+      "transformer": "A type of neural network architecture that uses self-attention to process sequential data like text or speech.",
+      "neural inference": "The process of using a trained neural network to make predictions on new, unseen data.",
+      "context understanding": "The ability to interpret meaning based on surrounding words or situations.",
+      "keyword matching": "A technique that identifies specific words or phrases to determine meaning or sentiment."
+    };
+
+    // Add glossary tooltip logic
+    const glossaryTooltip = document.getElementById('glossary-tooltip');
+    let tooltipTimeout;
+
+    document.addEventListener('mouseover', function(e) {
+      const term = e.target.closest('.glossary-term');
+      if (term) {
+        const key = term.getAttribute('data-term');
+        if (glossary[key]) {
+          glossaryTooltip.textContent = glossary[key];
+          glossaryTooltip.classList.add('visible');
+          document.onmousemove = function(ev) {
+            let x = ev.clientX + 18;
+            let y = ev.clientY - 10;
+            if (x + glossaryTooltip.offsetWidth > window.innerWidth) x = window.innerWidth - glossaryTooltip.offsetWidth - 10;
+            if (y + glossaryTooltip.offsetHeight > window.innerHeight) y = window.innerHeight - glossaryTooltip.offsetHeight - 10;
+            glossaryTooltip.style.left = x + 'px';
+            glossaryTooltip.style.top = y + 'px';
+          };
+        }
+      }
+    });
+
+    document.addEventListener('mouseout', function(e) {
+      if (e.target.classList.contains('glossary-term')) {
+        glossaryTooltip.classList.remove('visible');
+        glossaryTooltip.style.left = '-9999px';
+        glossaryTooltip.style.top = '-9999px';
+        document.onmousemove = null;
+      }
+    });
+
+    // Add touch support for glossary
+    let lastTouchTerm = null;
+    document.addEventListener('touchstart', function(e) {
+      const term = e.target.closest('.glossary-term');
+      if (term) {
+        const key = term.getAttribute('data-term');
+        if (glossary[key]) {
+          glossaryTooltip.textContent = glossary[key];
+          glossaryTooltip.classList.add('visible');
+          const rect = term.getBoundingClientRect();
+          let x = rect.right + 8;
+          let y = rect.top;
+          if (x + glossaryTooltip.offsetWidth > window.innerWidth) x = window.innerWidth - glossaryTooltip.offsetWidth - 10;
+          if (y + glossaryTooltip.offsetHeight > window.innerHeight) y = window.innerHeight - glossaryTooltip.offsetHeight - 10;
+          glossaryTooltip.style.left = x + 'px';
+          glossaryTooltip.style.top = y + 'px';
+          lastTouchTerm = term;
+          e.preventDefault();
+        }
+      } else if (lastTouchTerm) {
+        glossaryTooltip.classList.remove('visible');
+        lastTouchTerm = null;
+      }
+    }, {passive: false});
+
+    // Add Intersection Observer for fade/slide-in
+    const fadeSections = document.querySelectorAll('.fade-section');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.18 });
+    fadeSections.forEach(section => observer.observe(section));
+
+    function detectEmotion() {
+      const text = document.getElementById("userInput").value.toLowerCase();
+      const output = document.getElementById("outputResult");
+
+      if (!text.trim()) {
+        output.textContent = "Please enter a sentence.";
+        return;
+      }
+
+      if (text.includes("happy") || text.includes("amazing") || text.includes("great") || text.includes("love")) {
+        output.textContent = "😊 Detected Emotion: Positive";
+      } else if (text.includes("sad") || text.includes("angry") || text.includes("terrible") || text.includes("hate")) {
+        output.textContent = "😠 Detected Emotion: Negative";
+      } else {
+        output.textContent = "😐 Detected Emotion: Neutral";
+      }
+    }
+
+    const explanations = {
+      positive: {
+        brain: 'Amygdala: Activates positive emotional circuits (e.g., joy, reward).',
+        ai: 'AI: Classifies as Positive Sentiment (e.g., happy, satisfied).'
+      },
+      negative: {
+        brain: 'Amygdala: Activates negative emotional circuits (e.g., fear, anger).',
+        ai: 'AI: Classifies as Negative Sentiment (e.g., angry, sad, upset).'
+      },
+      neutral: {
+        brain: 'Amygdala: Low activation, emotion is neutral or mixed.',
+        ai: 'AI: Classifies as Neutral Sentiment (e.g., no strong emotion detected).'
+      }
+    };
+    const buttons = document.querySelectorAll('.emo-example');
+    const result = document.getElementById('emo-result');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const sentiment = btn.getAttribute('data-sentiment');
+        result.innerHTML = `
+          <div style='font-size:1.15em; margin-bottom:0.5em;'><b>Sentence:</b> "${btn.textContent}"</div>
+          <div style='margin-bottom:0.5em;'><b>Brain (Amygdala):</b> <span style='color:#66f9da;'>${explanations[sentiment].brain}</span></div>
+          <div><b>AI (Sentiment Model):</b> <span style='color:#a78bfa;'>${explanations[sentiment].ai}</span></div>
+        `;
+        result.style.display = 'block';
+        result.scrollIntoView({behavior:'smooth', block:'center'});
+      });
+    });
+  </script>
+</body>
+</html>
