@@ -33,15 +33,38 @@ class Particle {
     ctx.fillStyle = this.color;
     ctx.fill();
   }
-}cur
+}
+
+// Add this function after the Particle class
+function calculateResponsivePosition(baseX, baseY, screenWidth, screenHeight) {
+  const scaleX = screenWidth / 1920; // Using 1920px as base width
+  const scaleY = screenHeight / 1080; // Using 1080px as base height
+  const minScale = 0.6; // Minimum scale to prevent nodes from getting too small
+
+  const scale = Math.max(minScale, Math.min(scaleX, scaleY));
+  return {
+    x: baseX * scale,
+    y: baseY * scale
+  };
+}
+
+// Update the nodes array to use base positions
+const basePositions = {
+  visualCortex: { x: -280, y: 200 },
+  auditoryArea: { x: 180, y: 120 },
+  motorCortex: { x: 280, y: 370 },
+  planningReasoning: { x: 30, y: 520 },
+  emotionDetection: { x: -240, y: 460 },
+  cognitiveControl: { x: 0, y: 270 }
+};
 
 const nodes = [
-  { label: "Visual Cortex", color: "#66f9da", link: "visualCortex.html", x: centerX - 280, y: centerY + 200 },
-  { label: "Auditory Area", color: "#a78bfa", link: "auditoryCortex.html", x: centerX + 180, y: centerY + 120 },
-  { label: "Motor Cortex", color: "#f6ad55", link: "motorCortex.html", x: centerX + 280, y: centerY + 370 },
-  { label: "Planning & Reasoning", color: "#fc8181", link: "planningCortex.html", x: centerX + 30, y: centerY + 520 },
-  { label: "Emotion Detection", color: "#f687b3", link: "emotionCortex.html", x: centerX - 240, y: centerY + 460 },
-  { label: "Cognitive Control", color: "#63b3ed", link: "cognition.html", x: centerX, y: centerY + 270 }
+  { label: "Visual Cortex", color: "#66f9da", link: "visualCortex.html", x: 0, y: 0 },
+  { label: "Auditory Area", color: "#a78bfa", link: "auditoryCortex.html", x: 0, y: 0 },
+  { label: "Motor Cortex", color: "#f6ad55", link: "motorCortex.html", x: 0, y: 0 },
+  { label: "Planning & Reasoning", color: "#fc8181", link: "planningCortex.html", x: 0, y: 0 },
+  { label: "Emotion Detection", color: "#f687b3", link: "emotionCortex.html", x: 0, y: 0 },
+  { label: "Cognitive Control", color: "#63b3ed", link: "cognition.html", x: 0, y: 0 }
 ];
 
 const connections = [];
@@ -243,20 +266,44 @@ window.addEventListener('resize', () => {
   const centerX = canvas.width / 2;
   const centerY = canvas.height / 2;
 
-  // Update node positions
-  nodes[0].x = centerX - 280;
-  nodes[0].y = centerY + 200;
-  nodes[1].x = centerX + 180;
-  nodes[1].y = centerY + 120;
-  nodes[2].x = centerX + 280;
-  nodes[2].y = centerY + 370;
-  nodes[3].x = centerX + 30;
-  nodes[3].y = centerY + 520;
-  nodes[4].x = centerX - 240;
-  nodes[4].y = centerY + 460;
-  nodes[5].x = centerX;
-  nodes[5].y = centerY + 270;
+  // Update node positions with responsive scaling
+  const positions = [
+    calculateResponsivePosition(basePositions.visualCortex.x, basePositions.visualCortex.y, canvas.width, canvas.height),
+    calculateResponsivePosition(basePositions.auditoryArea.x, basePositions.auditoryArea.y, canvas.width, canvas.height),
+    calculateResponsivePosition(basePositions.motorCortex.x, basePositions.motorCortex.y, canvas.width, canvas.height),
+    calculateResponsivePosition(basePositions.planningReasoning.x, basePositions.planningReasoning.y, canvas.width, canvas.height),
+    calculateResponsivePosition(basePositions.emotionDetection.x, basePositions.emotionDetection.y, canvas.width, canvas.height),
+    calculateResponsivePosition(basePositions.cognitiveControl.x, basePositions.cognitiveControl.y, canvas.width, canvas.height)
+  ];
+
+  nodes.forEach((node, index) => {
+    node.x = centerX + positions[index].x;
+    node.y = centerY + positions[index].y;
+  });
 });
+
+// Initial position calculation
+function initializePositions() {
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
+
+  const positions = [
+    calculateResponsivePosition(basePositions.visualCortex.x, basePositions.visualCortex.y, canvas.width, canvas.height),
+    calculateResponsivePosition(basePositions.auditoryArea.x, basePositions.auditoryArea.y, canvas.width, canvas.height),
+    calculateResponsivePosition(basePositions.motorCortex.x, basePositions.motorCortex.y, canvas.width, canvas.height),
+    calculateResponsivePosition(basePositions.planningReasoning.x, basePositions.planningReasoning.y, canvas.width, canvas.height),
+    calculateResponsivePosition(basePositions.emotionDetection.x, basePositions.emotionDetection.y, canvas.width, canvas.height),
+    calculateResponsivePosition(basePositions.cognitiveControl.x, basePositions.cognitiveControl.y, canvas.width, canvas.height)
+  ];
+
+  nodes.forEach((node, index) => {
+    node.x = centerX + positions[index].x;
+    node.y = centerY + positions[index].y;
+  });
+}
+
+// Call initializePositions after canvas setup
+initializePositions();
 
 // --- On page load, start intro animation ---
 window.addEventListener('DOMContentLoaded', () => {
