@@ -4,7 +4,8 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const centerX = canvas.width / 2;
-const centerY = canvas.height / 2;
+const centerY = canvas.height / 2 + 60;
+
 
 // Particle system for connections
 class Particle {
