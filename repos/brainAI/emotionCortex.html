@@ -431,8 +431,8 @@
         const sentiment = btn.getAttribute('data-sentiment');
         result.innerHTML = `
           <div style='font-size:1.15em; margin-bottom:0.5em;'><b>Sentence:</b> "${btn.textContent}"</div>
-          <div style='margin-bottom:0.5em;'><b>Brain (Amygdala):</b> <span style='color:#66f9da;'>${explanations[sentiment].brain}</span></div>
-          <div><b>AI (Sentiment Model):</b> <span style='color:#a78bfa;'>${explanations[sentiment].ai}</span></div>
+          <div style='margin-bottom:0.5em;'> <span style='color:#66f9da;'>${explanations[sentiment].brain}</span></div>
+          <div> <span style='color:#a78bfa;'>${explanations[sentiment].ai}</span></div>
         `;
         result.style.display = 'block';
         result.scrollIntoView({behavior:'smooth', block:'center'});
